@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "SrA23L/aGsPz/Nq3QnCGDpvzLpTl9OeMyovAxe5Ym5fW/7WTt6r0PNxKjJK71ePs1tiYvNulBV/qXLTq1Cnepw==",
+  "success": true,
+  "projectFilePath": "D:\\Programming\\VS\\Projects\\animalCharacteristics_aspnetCORE\\animalCharacteristics_aspnetCORE.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Horia\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\Horia\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.1\\microsoft.extensions.logging.abstractions.7.0.1.nupkg.sha512",
+    "C:\\Users\\Horia\\.nuget\\packages\\mysqlconnector\\2.3.5\\mysqlconnector.2.3.5.nupkg.sha512",
+    "C:\\Users\\Horia\\.nuget\\packages\\mysqlconnector.dependencyinjection\\2.3.5\\mysqlconnector.dependencyinjection.2.3.5.nupkg.sha512"
+  ],
+  "logs": []
+}

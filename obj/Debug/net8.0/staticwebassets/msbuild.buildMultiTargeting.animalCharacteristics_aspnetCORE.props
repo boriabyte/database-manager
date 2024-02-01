@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\animalCharacteristics_aspnetCORE.props" />
+</Project>

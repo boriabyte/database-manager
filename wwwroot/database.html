@@ -1,0 +1,359 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Database view</title>
+
+    <link rel="stylesheet" href="database-stylesheet.css"/>
+</head>
+<body>
+    <div id="design-bar">
+        <h2>ANIMAL CHARACTERISTICS DATABASE <button id="home-btn" type="button" onclick="btnClick_home()">HOME</button> <button id="anim-btn" type="button" onclick="btnClick_Anim()">ANIMALS</button> <button id="addEntry" type="button" onclick="addEntry()">ADD NEW ENTRY</button> <button id="delEntry" type="button" onclick="deleteEntry()">DELETE ENTRY</button></h2>
+    </div>
+    <h3 id="instruction">Select one entry from the table below to see the animals in that category</h3>
+    <table id="data-table">
+        <caption id="table-header" style="text-align: center">CHARACTERISTICS</caption>
+    </table>
+    <button id="hide" type="button" onclick="hide()" hidden><</button>
+    <table id="anim-table1" hidden>
+        <caption id="anim-table1-header">ANIMALS</caption>
+    </table>
+    <div id="footer">
+        <p>Horia SCARLAT - PIBD 2023-2024</p>
+    </div>
+
+    <div id="add-entry-form" style="display: none;">
+        <form id="formAdd" method="post" action="/add-entry">
+            <label for="char-field">Characteristic:</label><br>
+            <input type="text" id="char-field" name="char-field" style="border-radius: 5px; border-color: aliceblue; outline: none; box-shadow: none; border: 1.5px solid #c6c5c5; width: 400px;"><br>
+            <label for="anim-field">Animal/s:</label><br>
+            <input type="text" id="anim-field" name="anim-field" style="border-radius: 5px; border-color: aliceblue; outline: none; box-shadow: none; border: 1.5px solid #c6c5c5; width: 400px;"><br><br>
+            <input id="add-entry-form-btn" type="submit" value="SUBMIT">
+        </form>
+    </div>
+
+    <div id="del-entry-form" style="display: none;">
+        <form id="formDel" method="post" action="/del-entry">
+            <label for="char-field-page1">Characteristic:</label><br>
+            <input type="text" id="char-field-del" name="char-field-page1" style="border-radius: 5px; border-color: aliceblue; outline: none; box-shadow: none; border: 1.5px solid #c6c5c5; width: 400px;"><br>
+            <input id="del-entry-form-btn" type="submit" value="SUBMIT">
+        </form>
+    </div>
+
+    <div id="overlay" style="display: none;"></div>
+
+    <div id="custom-alert" style="display: none;">
+        <p id="alert-message"></p>
+        <button id="custom-alert-btn" onclick="document.getElementById('custom-alert').style.display='none'">OK</button>
+    </div>
+
+    <script>
+
+        let characteristics = [];
+        let animals = [];
+
+        fetch('/getRelatedAnimals')
+            .then(response => response.json())
+            .then(data => {
+                animals = data.map(row => row.name);
+            });
+
+        fetch('/')
+            .then(response => response.json())
+            .then(data => {
+                characteristics = data.map(row => row.characteristic);
+            });
+
+        document.getElementById('formAdd').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            var charField = document.getElementById('char-field').value.trim();
+            var animField = document.getElementById('anim-field').value.trim().split(',');
+
+            // Check if one or both of the fields are empty
+            if (!charField || !animField) {
+                document.getElementById('alert-message').textContent = 'Both fields must be filled out';
+                document.getElementById('custom-alert').style.display = 'block';
+                return;
+            }
+
+            // Check if the characteristic already exists
+            if (characteristics.includes(charField)) {
+                document.getElementById('alert-message').textContent = 'Characteristic already exists';
+                document.getElementById('custom-alert').style.display = 'block';
+                return;
+            }
+
+            var formData = new FormData(this);
+
+            fetch('/add-entry', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok ${response.statusText}`);
+                }
+                return response.text();
+            }).then(data => {
+                console.log('Success:', data);
+                location.reload(); // Refresh the page
+            }).catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+
+        // Delete form functionalities
+        document.getElementById('formDel').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            var charField = document.getElementById('char-field-del').value.trim();
+
+            // Check if the field is empty
+            if (!charField) {
+                document.getElementById('alert-message').textContent = 'Field must be filled out';
+                document.getElementById('custom-alert').style.display = 'block';
+                return;
+            }
+
+            // Check if the characteristic is valid
+            if (!characteristics.includes(charField)) {
+                document.getElementById('alert-message').textContent = 'Invalid characteristic';
+                document.getElementById('custom-alert').style.display = 'block';
+                return;
+            }
+
+            var formData = new FormData(this);
+
+            // Don't send user to endpoint after clicking submit
+            fetch('/del-entry', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok ${response.statusText}`);
+                }
+                return response.text();
+            }).then(data => {
+                console.log('Success:', data);
+                location.reload(); // Refresh the page
+            }).catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+
+        // Fetch characteristics to populate table
+        fetch('/')
+            .then(response => response.json())
+            .then(data => {
+
+                const table = document.getElementById('data-table');
+
+                data.forEach(row => {
+
+                    const tr = document.createElement('tr');
+
+                    tr.addEventListener('click', function () {
+
+                        // Call the populating table function for the animals when one entry
+                        // in the char table is clicked 
+                        fetchRelatedAnimals(text);
+                        table.style.animation = "moveRight 0.75s forwards";
+                    });
+
+                    // Create table
+                    const text = row["characteristic"];
+                    const td = document.createElement('td');
+                    td.textContent = text;
+                    tr.appendChild(td);
+                    table.appendChild(tr);
+                });
+            });
+
+        function fetchRelatedAnimals(characteristic) {
+
+            // Fetch the related animals from the MySQL database
+            fetch('/getRelatedAnimals', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ characteristic: characteristic }),
+            })
+                .then(response => response.json())
+                .then(data => {
+
+                    const table = document.getElementById('anim-table1');
+                    const caption = document.getElementById('anim-table1-header');
+                    const hide = document.getElementById('hide');
+
+                    table.style.animation = "slideInLeft 1s forwards";
+
+                    // Make table invisible until summoned
+                    let rows = table.getElementsByTagName('tr');
+                    while (rows[0]) {
+                        rows[0].parentNode.removeChild(rows[0]);
+                    }
+
+                    data.forEach(row => {
+
+                        const tr = document.createElement('tr');
+
+                        const text = row["name"];
+                        const td = document.createElement('td');
+                        td.textContent = text;
+                        tr.appendChild(td);
+                        table.appendChild(tr);
+                    });
+
+                    // Make table visible when summoned
+                    caption.style.display = "table-caption";
+                    table.style.display = "table";
+
+                    // Show hide btn after table is shown
+                    table.addEventListener('animationend', () => {
+
+                        hide.style.display = "block";
+                        hide.style.animation = "fadeIn 0.75s forwards";
+                    });
+
+                });
+
+        }
+
+        // Btns for destionations 
+        function btnClick_home() {
+
+            window.location.href = "index.html";
+        }
+
+        function btnClick_Anim() {
+
+            window.location.href = "animals.html";
+        }
+
+        // Don't send user to endpoint
+        document.getElementById('del-entry-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+        });
+
+        // Hide elements, refresh page fater hide button is clicked
+        function hide() {
+
+            const table = document.getElementById('anim-table1');
+            const hide = document.getElementById('hide');
+            const data = document.getElementById('data-table');
+
+            hide.style.animation = "fadeOut 0.75s forwards";
+            table.style.animation = "slideBackLeft 1s forwards";
+            data.style.animation = "moveLeft 1s forwards";
+
+            table.addEventListener('animationend', () => {
+
+                hide.style.display = "none";
+                location.reload();
+            });
+        }
+
+        // Animation when entry form is summoned after btn is pressed
+        function addEntry() {
+
+            document.getElementById("overlay").style.animation = "fadeIn 0.75s forwards";
+            document.getElementById("add-entry-form").style.animation = "slideInTop 0.75s forwards";
+
+            // Display elements
+            document.getElementById("add-entry-form").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+
+            // Add click event listener when user clicks away
+            document.getElementById("overlay").addEventListener('click', hideAddEntryForm);
+
+            document.getElementById("add-entry-form").addEventListener('click', function (event) {
+
+                event.stopPropagation();
+            });
+
+        }
+
+        // Animation on click of btn to delete entry
+        function deleteEntry() {
+
+            document.getElementById("overlay").style.animation = "fadeIn 0.75s forwards";
+            document.getElementById("del-entry-form").style.animation = "slideInTop 0.75s forwards";
+
+            // Display elements
+            document.getElementById("del-entry-form").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+
+            // Add event listener to do things when click is detected
+            document.getElementById("overlay").addEventListener('click', hideDelEntryForm);
+
+            document.getElementById("del-entry-form").addEventListener('click', function (event) {
+
+                event.stopPropagation();
+            });
+
+        }
+
+        // Animations when clicked away to hide add entry form
+        function hideAddEntryForm() {
+
+            // Delete input data if clicked away
+            document.getElementById("char-field").value = " ";
+            document.getElementById("anim-field").value = " ";
+
+            // Animations for add entry form and overlay when clicked away
+            document.getElementById("add-entry-form").style.animation = "slideBackTop 0.75s forwards";
+            document.getElementById("overlay").style.animation = "fadeOut 0.75s forwards"
+
+            // Hide form after animation plays to prevent it from showing up again
+            document.getElementById("add-entry-form").addEventListener("animationend", function () {
+
+                document.getElementById("add-entry-form").style.display = "none";
+                document.getElementById("add-entry-form").removeEventListener("animationend", arguments.callee);
+            });
+
+            // Hide overlay after animation plays to prevent it from showing up again
+            document.getElementById("overlay").addEventListener("animationend", function () {
+
+                document.getElementById("overlay").style.display = "none";
+                document.getElementById("overlay").removeEventListener("animationend", arguments.callee);
+            });
+
+            // Remove listeners for future playing of animations; they are added at the beginning of the routine
+            // then deleted at the end of it so it can loop
+            document.getElementById("overlay").removeEventListener('click', hideAddEntryForm);
+            document.removeEventListener('click', hideAddEntryForm);
+        }
+
+        // Animations when clicked away to hide del entry form
+        function hideDelEntryForm() {
+
+            // Delete entry if form is hidden
+            document.getElementById("char-field-del").value = " ";
+
+            // Animations for overly and form to go way when clicked away
+            document.getElementById("del-entry-form").style.animation = "slideBackTop 0.75s forwards";
+            document.getElementById("overlay").style.animation = "fadeOut 0.75s forwards"
+
+            // Hide form to prevent it from showing after slide back top animation plays
+            document.getElementById("del-entry-form").addEventListener("animationend", function () {
+
+                document.getElementById("del-entry-form").style.display = "none";
+                document.getElementById("del-entry-form").removeEventListener("animationend", arguments.callee);
+            });
+
+            // Hide form to prevent it from showing after fade out animation plays
+            document.getElementById("overlay").addEventListener("animationend", function () {
+
+                document.getElementById("overlay").style.display = "none";
+                document.getElementById("overlay").removeEventListener("animationend", arguments.callee);
+            });
+
+            // Remove event listeners to ensure correct looping
+            document.getElementById("overlay").removeEventListener('click', hideDelEntryForm);
+            document.removeEventListener('click', hideForm);
+        }
+
+    </script>
+</body>
+</html>

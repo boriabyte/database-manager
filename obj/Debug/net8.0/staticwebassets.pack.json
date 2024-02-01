@@ -1,0 +1,45 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\Programming\\VS\\Projects\\animalCharacteristics_aspnetCORE\\wwwroot\\StyleSheet.css",
+      "PackagePath": "staticwebassets\\StyleSheet.css"
+    },
+    {
+      "Id": "D:\\Programming\\VS\\Projects\\animalCharacteristics_aspnetCORE\\wwwroot\\animals-stylesheet.css",
+      "PackagePath": "staticwebassets\\animals-stylesheet.css"
+    },
+    {
+      "Id": "D:\\Programming\\VS\\Projects\\animalCharacteristics_aspnetCORE\\wwwroot\\animals.html",
+      "PackagePath": "staticwebassets\\animals.html"
+    },
+    {
+      "Id": "D:\\Programming\\VS\\Projects\\animalCharacteristics_aspnetCORE\\wwwroot\\database-stylesheet.css",
+      "PackagePath": "staticwebassets\\database-stylesheet.css"
+    },
+    {
+      "Id": "D:\\Programming\\VS\\Projects\\animalCharacteristics_aspnetCORE\\wwwroot\\database.html",
+      "PackagePath": "staticwebassets\\database.html"
+    },
+    {
+      "Id": "D:\\Programming\\VS\\Projects\\animalCharacteristics_aspnetCORE\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.animalCharacteristics_aspnetCORE.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.animalCharacteristics_aspnetCORE.props",
+      "PackagePath": "build\\animalCharacteristics_aspnetCORE.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.animalCharacteristics_aspnetCORE.props",
+      "PackagePath": "buildMultiTargeting\\animalCharacteristics_aspnetCORE.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.animalCharacteristics_aspnetCORE.props",
+      "PackagePath": "buildTransitive\\animalCharacteristics_aspnetCORE.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
