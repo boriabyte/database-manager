@@ -28,3 +28,4 @@ D:\Programming\VS\Projects\animalCharacteristics_aspnetCORE\obj\Debug\net8.0\ref
 D:\Programming\VS\Projects\animalCharacteristics_aspnetCORE\obj\Debug\net8.0\animalCharacteristics_aspnetCORE.pdb
 D:\Programming\VS\Projects\animalCharacteristics_aspnetCORE\obj\Debug\net8.0\animalCharacteristics_aspnetCORE.genruntimeconfig.cache
 D:\Programming\VS\Projects\animalCharacteristics_aspnetCORE\obj\Debug\net8.0\ref\animalCharacteristics_aspnetCORE.dll
+D:\Programming\VS\Projects\animalCharacteristics_aspnetCORE\obj\Debug\net8.0\animalCharacteristics_aspnetCORE.sourcelink.json

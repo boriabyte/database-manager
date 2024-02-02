@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("animalCharacteristics_aspnetCORE")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+affd06a2d2a2d6bfb04438006b7b84a4c8e6915a")]
 [assembly: System.Reflection.AssemblyProductAttribute("animalCharacteristics_aspnetCORE")]
 [assembly: System.Reflection.AssemblyTitleAttribute("animalCharacteristics_aspnetCORE")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
